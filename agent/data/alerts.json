@@ -1,1 +1,0 @@
-[{"alertname":"HighCPUUsage","annotations":{"summary":"CPU usage exceeded threshold","description":"Pod cpu-123 is consuming >90% CPU for over 5 mins"},"labels":{"severity":"critical"},"analysis":{"analysis":"No response","confidence":7,"suggestions":[]}}]
