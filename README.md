@@ -27,6 +27,18 @@ This project enables deep visibility into any backend system by combining:
 | Tracing         | OpenTelemetry SDK + Jaeger      |
 | Alert Processor | Node.js (Express)               |
 
+
+<img width="1381" alt="Screenshot 2025-06-23 at 6 11 55 AM" src="https://github.com/user-attachments/assets/4acaa545-7e0c-4663-989e-f0e8d7500789" />
+
+<img width="1195" alt="Screenshot 2025-06-23 at 2 12 33 AM" src="https://github.com/user-attachments/assets/cbfbab57-77ff-47dc-971b-55d5a5305413" />
+
+<img width="1171" alt="Screenshot 2025-06-23 at 2 11 11 AM" src="https://github.com/user-attachments/assets/e552b401-2e7a-4fa9-b91a-36f8443ff6ed" />
+
+<img width="1170" alt="Screenshot 2025-06-23 at 2 09 48 AM" src="https://github.com/user-attachments/assets/7bce7cd6-4fcb-43af-a3a0-5be8fe3f831c" />
+
+<img width="1175" alt="Screenshot 2025-06-23 at 2 09 09 AM" src="https://github.com/user-attachments/assets/e6361e37-49ee-4c8b-ac88-73e7d4a493c9" />
+
+
 ## Project Structure
 
 ```
@@ -92,6 +104,7 @@ npm install
 ```
 
 ### 3. Setup environment variables
+
 
 Create a `.env` file in the root:
 
@@ -282,144 +295,8 @@ For questions or improvements, contact the maintainer.
 
 © 2025 Intelligent Observability Stack
 
-## Architecture Diagram (Mermaid)
+## Architecture Diagram 
 
-```mermaid
-graph TB
-    %% User Layer
-    subgraph "User Interface Layer"
-        UI[React Frontend]
-        MIC[🎤 Voice Input]
-        SPEAKER[🔊 Audio Output]
-    end
+![image](https://github.com/user-attachments/assets/d8dfb55b-6ff3-4c27-b1c2-cc5f757e0f66)
 
-    %% API Gateway & Load Balancer
-    subgraph "Edge Layer"
-        NGINX[NGINX Reverse Proxy]
-        LB[Load Balancer]
-    end
 
-    %% Application Layer
-    subgraph "Application Services"
-        APP1[Node.js App Instance 1]
-        APP2[Node.js App Instance 2]
-        APP3[Node.js App Instance 3]
-        WEBHOOK[Alert Receiver Service]
-        AI_SERVICE[AI Analysis Service]
-    end
-
-    %% External AI Services
-    subgraph "External AI APIs"
-        GEMINI[Google Gemini API]
-        MURF[Murf TTS API]
-    end
-
-    %% Monitoring & Observability Stack
-    subgraph "Observability Platform"
-        PROM[Prometheus Server]
-        ALERT_MGR[Alertmanager]
-        GRAFANA[Grafana Dashboard]
-        JAEGER_UI[Jaeger UI]
-    end
-
-    %% Tracing & Metrics Collection
-    subgraph "Telemetry Layer"
-        JAEGER_COL[Jaeger Collector]
-        OTEL_COL[OpenTelemetry Collector]
-        PROM_EXPORTER[Prometheus Exporter]
-    end
-
-    %% Logging Infrastructure
-    subgraph "Logging Stack"
-        LOKI[Loki Log Aggregator]
-        PROMTAIL[Promtail Log Shipper]
-        LOG_FILES[(Log Files)]
-    end
-
-    %% Data Storage
-    subgraph "Storage Layer"
-        PROM_DB[(Prometheus TSDB)]
-        LOKI_DB[(Loki Storage)]
-        JAEGER_DB[(Jaeger Storage)]
-        GRAFANA_DB[(Grafana SQLite)]
-    end
-
-    %% Alert Rules & Configuration
-    subgraph "Configuration"
-        ALERT_RULES[Alert Rules YAML]
-        PROM_CONFIG[Prometheus Config]
-        GRAF_CONFIG[Grafana Dashboards]
-    end
-
-    %% Data Flow Connections
-    UI --> NGINX
-    MIC --> UI
-    UI --> SPEAKER
-
-    NGINX --> LB
-    LB --> APP1
-    LB --> APP2
-    LB --> APP3
-
-    %% Application to AI Services
-    UI --> AI_SERVICE
-    AI_SERVICE --> GEMINI
-    AI_SERVICE --> MURF
-
-    %% Monitoring Data Flow
-    APP1 --> OTEL_COL
-    APP2 --> OTEL_COL
-    APP3 --> OTEL_COL
-    WEBHOOK --> OTEL_COL
-
-    OTEL_COL --> JAEGER_COL
-    OTEL_COL --> PROM_EXPORTER
-
-    PROM_EXPORTER --> PROM
-    JAEGER_COL --> JAEGER_DB
-
-    %% Logging Flow
-    APP1 --> LOG_FILES
-    APP2 --> LOG_FILES
-    APP3 --> LOG_FILES
-    WEBHOOK --> LOG_FILES
-    NGINX --> LOG_FILES
-
-    LOG_FILES --> PROMTAIL
-    PROMTAIL --> LOKI
-    LOKI --> LOKI_DB
-
-    %% Alert Flow
-    PROM --> ALERT_MGR
-    ALERT_RULES --> PROM
-    ALERT_MGR --> WEBHOOK
-
-    %% Dashboard Connections
-    GRAFANA --> PROM_DB
-    GRAFANA --> LOKI_DB
-    GRAFANA --> JAEGER_DB
-    JAEGER_UI --> JAEGER_DB
-
-    %% Configuration
-    PROM_CONFIG --> PROM
-    GRAF_CONFIG --> GRAFANA
-
-    %% Storage Connections
-    PROM --> PROM_DB
-    GRAFANA --> GRAFANA_DB
-
-    %% Styling
-    classDef userLayer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef appLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef monitorLayer fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
-    classDef storageLayer fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef externalLayer fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    classDef configLayer fill:#f1f8e9,stroke:#33691e,stroke-width:2px
-
-    class UI,MIC,SPEAKER userLayer
-    class APP1,APP2,APP3,WEBHOOK,AI_SERVICE appLayer
-    class PROM,ALERT_MGR,GRAFANA,JAEGER_UI,JAEGER_COL,OTEL_COL,PROM_EXPORTER,LOKI,PROMTAIL monitorLayer
-    class PROM_DB,LOKI_DB,JAEGER_DB,GRAFANA_DB,LOG_FILES storageLayer
-    class GEMINI,MURF externalLayer
-    class ALERT_RULES,PROM_CONFIG,GRAF_CONFIG configLayer
-```
